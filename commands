@@ -1,0 +1,18 @@
+Command	Purpose
+ping	Checks connectivity between computers.
+ipconfig	Displays IP configuration.
+ipconfig /all	Displays detailed network configuration.
+ipconfig /release	Releases the DHCP IP address.
+ipconfig /renew	Requests a new DHCP IP address.
+ipconfig /flushdns	Clears the DNS cache.
+getmac /v	Displays MAC addresses.
+nbtstat -a	Displays NetBIOS information.
+arp -a	Displays ARP table entries.
+hostname	Displays the computer name.
+netdiag	Performs network diagnostic tests.
+netstat	Displays active TCP/IP connections.
+nslookup	Checks DNS information.
+pathping	Combines Ping and Tracert functionality.
+route	Displays or modifies the routing table.
+
+These are command-line exercises, not C programs.

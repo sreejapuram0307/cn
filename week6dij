@@ -1,0 +1,138 @@
+#include <stdio.h>
+
+#define IN 999
+#define N 6
+
+char nodeName(int node) {
+    return 'A' + node - 1;
+}
+
+int dijkstra(int cost[][N], int source, int target) {
+    int dist[N], prev[N], selected[N] = {0};
+    int i, j, current, next, min, newDist;
+
+    // Initialize distances
+    for (i = 1; i < N; i++) {
+        dist[i] = IN;
+        prev[i] = -1;
+    }
+
+    dist[source] = 0;
+
+    printf("\nDIJKSTRA'S ALGORITHM - STEPS\n");
+
+    current = source;
+
+    while (1) {
+        selected[current] = 1;
+
+        printf("\nCurrent node: %c\n", nodeName(current));
+
+        // Update adjacent nodes
+        for (i = 1; i < N; i++) {
+
+            if (selected[i] == 0 && cost[current][i] != IN) {
+
+                newDist = dist[current] + cost[current][i];
+
+                printf("\nChecking %c: ", nodeName(i));
+
+                if (newDist < dist[i]) {
+                    dist[i] = newDist;
+                    prev[i] = current;
+                    printf("Updated");
+                } else {
+                    printf("No update");
+                }
+            }
+        }
+
+        if (current == target)
+            break;
+
+        min = IN;
+        next = -1;
+
+        // Find next node with minimum distance
+        for (i = 1; i < N; i++) {
+            if (selected[i] == 0 && dist[i] < min) {
+                min = dist[i];
+                next = i;
+            }
+        }
+
+        if (next == -1)
+            break;
+
+        current = next;
+    }
+
+    // Calculate shortest path
+    if (dist[target] == IN) {
+        printf("\nNo path exists.\n");
+        return -1;
+    }
+
+    int path[N], count = 0;
+
+    current = target;
+
+    while (current != -1) {
+        path[count++] = current;
+        current = prev[current];
+    }
+
+    printf("\nShortest Path: ");
+
+    for (i = count - 1; i >= 0; i--) {
+        printf("%c", nodeName(path[i]));
+
+        if (i > 0)
+            printf(" -> ");
+    }
+
+    printf("\nShortest Distance = %d\n", dist[target]);
+
+    return dist[target];
+}
+
+int main() {
+    int cost[N][N] = {0};
+    int i, j, source, target;
+
+    printf("Enter the weights between nodes.\n");
+    printf("Enter 0 if there is no direct path.\n");
+
+    for (i = 1; i < N; i++) {
+        for (j = i + 1; j < N; j++) {
+
+            printf("Enter weight between %c and %c: ",
+                   nodeName(i), nodeName(j));
+
+            scanf("%d", &cost[i][j]);
+
+            cost[j][i] = cost[i][j];
+
+            if (cost[i][j] == 0) {
+                cost[i][j] = IN;
+                cost[j][i] = IN;
+            }
+        }
+    }
+
+    printf("\nEnter source node (1-5): ");
+    scanf("%d", &source);
+
+    printf("Enter target node (1-5): ");
+    scanf("%d", &target);
+
+    if (source < 1 || source >= N ||
+        target < 1 || target >= N) {
+        printf("Invalid node.\n");
+        return 1;
+    }
+
+    dijkstra(cost, source, target);
+
+    return 0;
+}
